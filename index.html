@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waleed H. Alfakiat</title>
+
+  <script>
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'Segoe UI', 'sans-serif'],
+          },
+          colors: {
+            theme: {
+              bg: 'var(--bg-main)',
+              text: 'var(--text-main)',
+              muted: 'var(--text-muted)',
+            }
+          },
+          backgroundImage: {
+            'gradient-accent': 'linear-gradient(135deg, #0078D4 0%, #5E5CE6 100%)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-main: #f0f4f8;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --glass-bg: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(0, 0, 0, 0.08);
+      --glass-hover: rgba(0, 0, 0, 0.15);
+      --nav-bg: rgba(255, 255, 255, 0.75);
+      --pill-bg: rgba(0, 0, 0, 0.04);
+      --pill-border: rgba(0, 0, 0, 0.05);
+      --shadow-color: rgba(0, 0, 0, 0.05);
+    }
+
+    html.dark {
+      --bg-main: #050505;
+      --text-main: #f5f5f7;
+      --text-muted: #a1a1aa;
+      --glass-bg: rgba(30, 30, 32, 0.5);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-hover: rgba(255, 255, 255, 0.15);
+      --nav-bg: rgba(15, 15, 15, 0.7);
+      --pill-bg: rgba(0, 0, 0, 0.4);
+      --pill-border: rgba(255, 255, 255, 0.05);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      background-image: radial-gradient(circle at 15% 50%, rgba(0, 120, 212, 0.05), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(94, 92, 230, 0.05), transparent 25%);
+      background-attachment: fixed;
+    }
+
+    .glass-panel {
+      background: var(--glass-bg);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 2rem;
+      box-shadow: 0 4px 30px var(--shadow-color);
+      transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+    .glass-panel:hover {
+      border-color: var(--glass-hover);
+      transform: translateY(-2px);
+    }
+
+    .glass-nav {
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 9999px;
+      box-shadow: 0 10px 30px var(--shadow-color);
+    }
+
+    .skill-pill {
+      background: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+    }
+
+    .reveal { opacity: 0; transform: translateY(20px) scale(0.98); transition: all 0.7s cubic-bezier(0.2, 0.8, 0.2, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-main); }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 5px; border: 2px solid var(--bg-main); }
+  </style>
+</head>
+<body class="font-sans antialiased selection:bg-[#5E5CE6] selection:text-white">
+
+<div class="fixed w-full z-50 top-6 flex justify-center px-4 transition-all duration-300">
+  <nav class="glass-nav px-6 py-3 flex items-center justify-between gap-6 md:gap-10">
+    <div class="font-semibold tracking-wide text-sm flex items-center gap-2">
+      <div class="w-2 h-2 rounded-full bg-gradient-accent"></div>
+      Waleed H. Alfakiat
+    </div>
+    <div class="hidden md:flex space-x-6 text-sm font-medium text-theme-muted">
+      <a href="#about" class="hover:text-theme-text transition-colors">Overview</a>
+      <a href="#skills" class="hover:text-theme-text transition-colors">Skills</a>
+      <a href="#experience" class="hover:text-theme-text transition-colors">Experience</a>
+      <a href="#research" class="hover:text-theme-text transition-colors">Academic</a>
+    </div>
+    <button id="theme-toggle" type="button" class="text-theme-muted hover:text-theme-text rounded-lg text-sm p-2 transition-colors focus:outline-none">
+      <i id="theme-toggle-dark-icon" class="fa-solid fa-moon hidden text-lg"></i>
+      <i id="theme-toggle-light-icon" class="fa-solid fa-sun hidden text-lg"></i>
+    </button>
+  </nav>
+</div>
+
+<section id="about" class="pt-48 pb-24 px-6 max-w-5xl mx-auto text-center flex flex-col items-center justify-center min-h-[80vh] reveal">
+  <div class="inline-block px-4 py-1.5 rounded-full border border-[var(--glass-border)] bg-[var(--pill-bg)] text-xs font-semibold tracking-widest uppercase mb-6 text-theme-text backdrop-blur-md">
+    Cybersecurity Researcher & Senior Software Engineer
+  </div>
+
+  <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-2 text-theme-text">
+    Waleed H. Alfakiat
+  </h1>
+  <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-8 leading-tight">
+    Secure architecture. <span class="text-transparent bg-clip-text bg-gradient-accent">Advanced cryptography.</span>
+  </h2>
+
+  <p class="text-xl md:text-2xl text-theme-muted max-w-3xl mb-10 font-medium leading-relaxed">
+    Over 13 years engineering secure, full-stack enterprise systems. Bridging industry architecture with advanced academic research in network security and lightweight encryption algorithms.
+  </p>
+
+  <div class="flex flex-wrap justify-center gap-4 text-sm font-medium">
+    <a href="mailto:waleedalfakiat@hotmail.com" class="px-5 py-2.5 rounded-full glass-panel !rounded-full flex items-center gap-2 hover:text-[#0078D4] transition-colors cursor-pointer">
+      <i class="fa-solid fa-envelope"></i> waleedalfakiat@hotmail.com
+    </a>
+    <a href="https://orcid.org/0009-0005-1889-6516" target="_blank" class="px-5 py-2.5 rounded-full glass-panel !rounded-full flex items-center gap-2 hover:text-[#0078D4] transition-colors cursor-pointer">
+      <i class="fa-brands fa-orcid"></i> ORCID: 0009-0005-1889-6516
+    </a>
+    <a href="https://github.com/alfakiat" target="_blank" class="px-5 py-2.5 rounded-full glass-panel !rounded-full flex items-center gap-2 hover:text-[#0078D4] transition-colors">
+      <i class="fa-brands fa-github"></i> github.com/alfakiat
+    </a>
+  </div>
+</section>
+
+<section id="skills" class="py-20 px-6 max-w-7xl mx-auto reveal">
+  <h2 class="text-3xl font-bold mb-12 text-center">Technical Specifications</h2>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+    <div class="col-span-2 md:col-span-4 lg:col-span-3 lg:row-span-2 glass-panel p-10 flex flex-col justify-center relative overflow-hidden group">
+      <div class="absolute -right-10 -top-10 w-48 h-48 bg-gradient-accent opacity-10 rounded-full blur-3xl group-hover:opacity-20 transition-opacity"></div>
+      <div class="w-12 h-12 rounded-2xl bg-gradient-accent flex items-center justify-center mb-6 shadow-lg relative z-10 text-white">
+        <i class="fa-solid fa-microchip text-2xl"></i>
+      </div>
+      <h3 class="text-3xl font-bold mb-4 relative z-10">Software Architecture & Security</h3>
+      <p class="text-theme-muted text-lg relative z-10">
+        Adept in system architecture, backend development utilizing robust frameworks, and proactive penetration testing. Seeking to leverage dual expertise in a PhD program focused on cryptography while advancing cybersecurity and scalable software architecture.
+      </p>
+      <div class="flex flex-wrap gap-2 mt-6 relative z-10">
+        <span class="px-4 py-2 skill-pill rounded-xl text-sm font-medium">Penetration Testing</span>
+        <span class="px-4 py-2 skill-pill rounded-xl text-sm font-medium">ECC</span>
+        <span class="px-4 py-2 skill-pill rounded-xl text-sm font-medium">Block Ciphers</span>
+        <span class="px-4 py-2 skill-pill rounded-xl text-sm font-medium">WSN Security</span>
+      </div>
+    </div>
+
+    <div class="col-span-1 glass-panel p-6 flex flex-col items-center justify-center text-center cursor-default">
+      <i class="fa-brands fa-laravel text-4xl text-[#FF2D20] mb-3"></i>
+      <span class="text-sm font-medium">Laravel, Livewire, Filament</span>
+    </div>
+
+    <div class="col-span-1 glass-panel p-6 flex flex-col items-center justify-center text-center cursor-default">
+      <i class="fa-brands fa-python text-4xl text-[#3776AB] mb-3"></i>
+      <span class="text-sm font-medium">PHP, Python, C++</span>
+    </div>
+
+    <div class="col-span-1 glass-panel p-6 flex flex-col items-center justify-center text-center cursor-default">
+      <i class="fa-solid fa-database text-4xl text-[#00758F] mb-3"></i>
+      <span class="text-sm font-medium">Oracle & MySQL</span>
+    </div>
+
+    <div class="col-span-1 glass-panel p-6 flex flex-col items-center justify-center text-center cursor-default">
+      <i class="fa-brands fa-linux text-4xl text-gray-800 dark:text-white mb-3 transition-colors"></i>
+      <span class="text-sm font-medium">Ubuntu / Apache</span>
+    </div>
+
+  </div>
+</section>
+
+<section id="experience" class="py-20 px-6 max-w-5xl mx-auto reveal">
+  <h2 class="text-3xl font-bold mb-12 text-center">Professional Experience</h2>
+
+  <div class="space-y-6">
+
+    <div class="glass-panel p-8 md:p-10 flex flex-col md:flex-row gap-8">
+      <div class="md:w-1/3 shrink-0">
+        <div class="text-transparent bg-clip-text bg-gradient-accent font-bold tracking-wide text-sm uppercase mb-2">2021 – Present</div>
+        <h3 class="text-2xl font-bold mb-1">Web Developer & Systems Analyst</h3>
+        <p class="text-theme-muted font-medium">The World Islamic Sciences and Education University (W.I.S.E.)</p>
+      </div>
+      <div class="md:w-2/3 text-theme-text space-y-4 text-sm md:text-base leading-relaxed">
+        <p><strong class="font-bold opacity-80">System Architecture:</strong> Lead the architecture and development of full-stack Educational and Enterprise Resource Planning (ERP) systems, delivering scalable, secure, and maintainable solutions.</p>
+        <p><strong class="font-bold opacity-80">Infrastructure & Systems Administration:</strong> Manage enterprise IT infrastructure and application hosting environments, including Linux server administration, Apache configuration, system monitoring, troubleshooting, security hardening, and performance optimization.</p>
+        <p><strong class="font-bold opacity-80">Security & Critical Operations:</strong> Design and implement secure, reliable, and high-availability solutions for educational and ERP systems, ensuring data integrity, RBAC, authentication, authorization, auditing, and regulatory compliance.</p>
+        <p><strong class="font-bold opacity-80">Systems Administration:</strong> Administer enterprise systems, managing software licensing, commercial renewals, web-based platforms, digital registries, and database administration.</p>
+      </div>
+    </div>
+
+    <div class="glass-panel p-8 md:p-10 flex flex-col md:flex-row gap-8">
+      <div class="md:w-1/3 shrink-0">
+        <div class="text-transparent bg-clip-text bg-gradient-accent font-bold tracking-wide text-sm uppercase mb-2">2026 – Present</div>
+        <h3 class="text-2xl font-bold mb-1">Academic Peer Reviewer</h3>
+        <p class="text-theme-muted font-medium">ACRT</p>
+      </div>
+      <div class="md:w-2/3 text-theme-text space-y-4 text-sm md:text-base leading-relaxed">
+        <p><strong class="font-bold opacity-80">Manuscript Evaluation:</strong> Review and evaluate peer-reviewed scientific manuscripts across computer science, robotics, and cybersecurity domains, assessing research methodology, technical innovation, and scientific contribution.</p>
+        <p><strong class="font-bold opacity-80">Technical Assessment:</strong> Assess the validity of research methodologies, algorithms, and technical findings to uphold high academic publication standards.</p>
+      </div>
+    </div>
+
+    <div class="glass-panel p-8 md:p-10 flex flex-col md:flex-row gap-8">
+      <div class="md:w-1/3 shrink-0">
+        <div class="text-theme-muted font-bold tracking-wide text-sm uppercase mb-2">2020 – Present</div>
+        <h3 class="text-2xl font-bold mb-1">Consulting Systems & Security Engineer</h3>
+        <p class="text-theme-muted font-medium">Quality Solutions Company</p>
+      </div>
+      <div class="md:w-2/3 text-theme-text space-y-4 text-sm md:text-base leading-relaxed">
+        <p><strong class="font-bold opacity-80">Systems Analysis & Web Development:</strong> Provided comprehensive full-stack web development and systems analysis, engineering robust software solutions tailored to enterprise client requirements.</p>
+        <p><strong class="font-bold opacity-80">Cybersecurity & Security Hardening:</strong> Performed penetration testing, vulnerability assessments, and infrastructure hardening to enhance application security and protect critical systems against emerging vulnerabilities.</p>
+      </div>
+    </div>
+
+    <div class="glass-panel p-8 md:p-10 flex flex-col md:flex-row gap-8">
+      <div class="md:w-1/3 shrink-0">
+        <div class="text-theme-muted font-bold tracking-wide text-sm uppercase mb-2">2018 – Present</div>
+        <h3 class="text-2xl font-bold mb-1">Founder & Lead Developer</h3>
+        <p class="text-theme-muted font-medium">BePro Team</p>
+      </div>
+      <div class="md:w-2/3 text-theme-text space-y-4 text-sm md:text-base leading-relaxed">
+        <p><strong class="font-bold opacity-80">Entrepreneurship & Hosting:</strong> Founded and managed a technology solutions firm providing full-stack web development, and secure web hosting services.</p>
+        <p><strong class="font-bold opacity-80">Educational Platforms:</strong> Designed and deployed an automated examination and practice test platform, featuring integrated certificate verification systems and end-to-end server management.</p>
+      </div>
+    </div>
+
+    <div class="glass-panel p-8 md:p-10 flex flex-col md:flex-row gap-8">
+      <div class="md:w-1/3 shrink-0">
+        <div class="text-theme-muted font-bold tracking-wide text-sm uppercase mb-2">2013 – 2021</div>
+        <h3 class="text-2xl font-bold mb-1">Freelancer</h3>
+        <p class="text-theme-muted font-medium">Self-Employed</p>
+      </div>
+      <div class="md:w-2/3 text-theme-text space-y-4 text-sm md:text-base leading-relaxed">
+        <p><strong class="font-bold opacity-80">Web Development:</strong> Engineered and deployed custom PHP-based web applications tailored to diverse client requirements, focusing on scalable architecture and secure data transmission.</p>
+        <p><strong class="font-bold opacity-80">Penetration Testing:</strong> Conducted comprehensive vulnerability assessments and penetration testing for web applications to harden security postures.</p>
+        <p><strong class="font-bold opacity-80">Server Management:</strong> Administered and optimized Linux web servers (Ubuntu, Apache, MySQL), managing end-to-end hosting environments.</p>
+      </div>
+    </div>
+
+    <div class="glass-panel p-6 flex items-center justify-between gap-4">
+      <div>
+        <h3 class="text-lg font-bold">Head of Programming Section <span class="text-theme-muted font-normal text-sm ml-2">LB-H (6/2016 – 1/2019)</span></h3>
+        <p class="text-theme-text text-sm mt-1">Directed the programming community, facilitating technical discussions, guiding developers, and overseeing the moderation of software engineering and cybersecurity topics.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="research" class="py-20 px-6 max-w-7xl mx-auto reveal">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <div class="glass-panel p-10">
+      <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+        <i class="fa-solid fa-graduation-cap text-[#0078D4]"></i> Education
+      </h2>
+
+      <div class="mb-8">
+        <h3 class="text-xl font-bold text-theme-text mb-1">Master's Degree in Science (Computer Science)</h3>
+        <p class="text-theme-muted font-medium text-sm mb-4">King Abdullah II School of Information Technology, The University of Jordan (JU) • 10/2022 – 1/2026 • GPA: 4.00/4.00</p>
+        <div class="skill-pill p-4 rounded-2xl text-sm text-theme-text">
+          <strong class="font-bold opacity-80 block mb-1">Thesis:</strong> A Lightweight Encryption Algorithm with Elliptic Curve-Based Key Scheduling and Substitution-Permutation Network Structure.
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-xl font-bold text-theme-text mb-1">Bachelor's Degree in Science (Software Engineering)</h3>
+        <p class="text-theme-muted font-medium text-sm mb-4">School of Information Technology, The World Islamic Sciences and Education University (W.I.S.E.) • 9/2017 – 1/2021 • GPA: 95.4%</p>
+        <div class="skill-pill p-4 rounded-2xl text-sm text-theme-text">
+          <strong class="font-bold opacity-80 block mb-1">Graduation Project:</strong> AlfaCrypt: A Lightweight Data Encryption Algorithm.
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-panel p-10">
+      <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+        <i class="fa-solid fa-book-open text-[#5E5CE6]"></i> Publications
+      </h2>
+
+      <div class="space-y-4">
+        <div class="skill-pill p-5 rounded-2xl transition-colors">
+          <span class="inline-block px-2.5 py-1 bg-yellow-500/20 text-yellow-600 dark:text-yellow-500 text-xs font-bold rounded-lg mb-3">UNDER REVIEW</span>
+          <h4 class="text-base font-bold text-theme-text mb-2">Energy-Efficient Extended PRESENT-128 Cipher for IoT and Wireless Sensor Network Security</h4>
+          <p class="text-sm text-theme-muted">Alfakiat, W., [et al.]</p>
+        </div>
+
+        <div class="skill-pill p-5 rounded-2xl transition-colors">
+          <span class="inline-block px-2.5 py-1 bg-green-500/20 text-green-700 dark:text-green-400 text-xs font-bold rounded-lg mb-3">PUBLISHED 2024</span>
+          <h4 class="text-base font-bold text-theme-text mb-2">An Optimized Key Schedule Algorithm of PRESENT-128 Using Elliptic Curve Cryptosystem</h4>
+          <p class="text-sm text-theme-muted">Al-Sharaeh, S., Alfakiat, W., [et al.] • CSCE Conference, Springer.</p>
+        </div>
+
+        <div class="skill-pill p-5 rounded-2xl transition-colors">
+          <span class="inline-block px-2.5 py-1 bg-green-500/20 text-green-700 dark:text-green-400 text-xs font-bold rounded-lg mb-3">PUBLISHED 2024</span>
+          <h4 class="text-base font-bold text-theme-text mb-2">Big Data Techniques in Mobile Cloud Networks for Healthcare: A Survey of Challenges, Opportunities, and Future Directions</h4>
+          <p class="text-sm text-theme-muted">Al-Sharaeh, S., Alenezi, B., Albasheer, M., Alfakiat, W. • CSCE Conference, Springer.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="py-10 text-center text-theme-muted text-sm border-t border-[var(--glass-border)] mt-10">
+  <p>&copy; 2026 Waleed H. Alfakiat.</p>
+</footer>
+
+<script>
+  // --- Dark/Light Mode Toggle Logic ---
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const darkIcon = document.getElementById('theme-toggle-dark-icon');
+  const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+  // Initial icon state
+  if (document.documentElement.classList.contains('dark')) {
+    lightIcon.classList.remove('hidden');
+  } else {
+    darkIcon.classList.remove('hidden');
+  }
+
+  // Toggle on click
+  themeToggleBtn.addEventListener('click', function() {
+    // Toggle icons
+    darkIcon.classList.toggle('hidden');
+    lightIcon.classList.toggle('hidden');
+
+    // Toggle logic & LocalStorage save
+    if (localStorage.getItem('color-theme')) {
+      if (localStorage.getItem('color-theme') === 'light') {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      }
+    } else {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    }
+  });
+
+  // --- Scroll Reveal Animations ---
+  document.addEventListener("DOMContentLoaded", () => {
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach((el) => {
+      observer.observe(el);
+    });
+  });
+</script>
+</body>
+</html>
